@@ -1,0 +1,6 @@
+# python specific
+env/
+*.pyc
+
+# secrets
+.env
