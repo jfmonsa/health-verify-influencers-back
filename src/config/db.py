@@ -1,15 +1,20 @@
-"""db configuration."""
+"""Module data base configuration."""
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
-from sqlmodel import SQLModel
+from collections.abc import Generator
 
-from config import env_vars
+from sqlmodel import Session, SQLModel, create_engine
 
-engine = create_async_engine(env_vars.DB_CONNECTION_STRING, echo=True)
-async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+from src.config.env_vars import env_vars
 
-async def init_db() -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
+engine = create_engine(env_vars.DB_CONNECTION_STRING, echo=True)
 
+
+def create_db_and_tables() -> None:
+    """Create the database and tables with defined models that inherit from SQLModel."""
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session() -> Generator[Session, None, None]:
+    """Get a session from the database engine."""
+    with Session(engine) as session:
+        yield session

@@ -1,4 +1,5 @@
 [tool.ruff.lint]
 select = ["ALL"]
+ignore = ["D103", "D101", "D100", "ERA001", "COM812", "TD003", "FIX002", "ANN201"]
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["D104"]
