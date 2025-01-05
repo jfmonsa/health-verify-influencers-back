@@ -1,61 +1,8 @@
 """Module to define the database models for the app."""
 
-from __future__ import annotations
+from typing import Annotated
 
-from typing import TYPE_CHECKING, Annotated, Literal
-
-from src.utils.to_snake_case import to_snake_case
-
-if TYPE_CHECKING:
-    from pydantic import HttpUrl
-
-from sqlalchemy.orm import declared_attr
-from sqlmodel import Field, Relationship
-from sqlmodel import SQLModel as _SQLModel
-
-
-class SQLModel(_SQLModel):
-    @declared_attr
-    def __tablename__(self) -> str:
-        """Set the snake case of the class name of the model as the table name."""
-        return to_snake_case(self.__class__.__name__)
-
-
-class HealthInfluencer(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    name: str | None
-    twitter_url: HttpUrl = Field(unique=True)
-    twitter_nickname: str = Field(index=True, unique=True)
-    followers: int
-    trend: Literal["up", "down", "stable"]
-    trust_score_avg: float
-    number_verified_claims: int = 0
-    estimated_annual_earnings: float
-    primary_category_id: Annotated[
-        int | None, "Category in which the influencer has made most claims"
-    ] = Field(foreign_key="health_category.id", default=None)
-
-    health_claims: list[HealthClaim] = Relationship(
-        back_populates="health_influencer", cascade_delete=True
-    )
-    primary_category: HealthCategory = Relationship()
-
-
-class HealthClaim(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    claim_text: str
-    url_source: Annotated[
-        HttpUrl, "Social media url post, tweet, etc. where the claim was made"
-    ]
-    date: Annotated[str, "Date when the claim was made (publication of the post)"]
-
-    health_influencer_id: int = Field(
-        foreign_key="health_influencer.id", ondelete="CASCADE"
-    )
-    health_influencer: HealthInfluencer = Relationship(back_populates="health_claims")
-    health_categories: list[HealthCategory] = Relationship(
-        back_populates="health_claims"
-    )
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class HealthCategory(SQLModel, table=True):
@@ -65,9 +12,30 @@ class HealthCategory(SQLModel, table=True):
     + one claim can have multiple categories.
     """
 
+    __tablename__ = "HEALTH_CATEGORY"
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(unique=True)
-    health_claims: list[HealthClaim] = Relationship(back_populates="health_categories")
+    health_claims: list["HealthClaim"] = Relationship(
+        back_populates="health_categories"
+    )
+
+
+class HealthClaim(SQLModel, table=True):
+    __tablename__ = "HEALTH_CLAIM"
+    id: int | None = Field(default=None, primary_key=True)
+    claim_text: str
+    url_source: Annotated[
+        str, "Social media url post, tweet, etc. where the claim was made"
+    ]
+    date: Annotated[str, "Date when the claim was made (publication of the post)"]
+
+    health_influencer_id: int = Field(
+        foreign_key="HEALTH_INFLUENCER.id", ondelete="CASCADE"
+    )
+    health_influencer: "HealthInfluencer" = Relationship(back_populates="health_claims")
+    health_categories: list[HealthCategory] = Relationship(
+        back_populates="health_claims"
+    )
 
 
 class ClaimHealthCategory(SQLModel, table=True):
@@ -76,12 +44,36 @@ class ClaimHealthCategory(SQLModel, table=True):
     since it's a many-to-many relationship.
     """
 
+    __tablename__ = "CLAIM_HEALTH_CATEGORY"
     claim_id: int | None = Field(
-        default=None, foreign_key="health_claim.id", primary_key=True
+        default=None, foreign_key="HEALTH_CLAIM.id", primary_key=True
     )
     category_id: int | None = Field(
-        default=None, foreign_key="health_category.id", primary_key=True
+        default=None, foreign_key="HEALTH_CATEGORY.id", primary_key=True
     )
+
+
+class HealthInfluencer(SQLModel, table=True):
+    __tablename__ = "HEALTH_INFLUENCER"
+    id: int | None = Field(default=None, primary_key=True)
+    name: str | None
+    twitter_url: str = Field(unique=True)
+    twitter_nickname: str = Field(index=True, unique=True)
+    followers: int
+    trend: str  # "up" | "down" | "stable"]
+
+    trust_score_avg: float
+    number_verified_claims: int = 0
+    estimated_annual_earnings: float
+    primary_category_id: Annotated[
+        int | None, "Category in which the influencer has made most claims"
+    ] = Field(foreign_key="HEALTH_CATEGORY.id", default=None)
+
+    health_claims: list["HealthClaim"] = Relationship(
+        back_populates="health_influencer",
+        cascade_delete=True,
+    )
+    primary_category: HealthCategory | None = Relationship()
 
 
 # NOTE(@jfmonsa): it could exits a table for user social media accounts
