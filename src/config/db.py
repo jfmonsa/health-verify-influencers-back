@@ -4,14 +4,13 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 
-from src.config.settings import env_vars
-
 from src.config.db_models import (
+    ClaimHealthCategory,  # noqa: F401
     HealthCategory,  # noqa: F401
     HealthClaim,  # noqa: F401
     HealthInfluencer,  # noqa: F401
-    ClaimHealthCategory,  # noqa: F401
 )
+from src.config.settings import env_vars
 
 async_engine = create_async_engine(
     url=env_vars.DB_CONNECTION_STRING, echo=True, connect_args={"ssl": "require"}
