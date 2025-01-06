@@ -4,12 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 
-from src.config.db_models import (
-    ClaimHealthCategory,  # noqa: F401
-    HealthCategory,  # noqa: F401
-    HealthClaim,  # noqa: F401
-    HealthInfluencer,  # noqa: F401
-)
+# import all models so SQLModel automatically detects them and creates the tables
+from src.config.db_models import *  # noqa: F403
 from src.config.settings import env_vars
 
 async_engine = create_async_engine(
@@ -20,7 +16,6 @@ async_engine = create_async_engine(
 async def init_db() -> None:
     """Create the database and tables with defined models that inherit from SQLModel."""
     async with async_engine.begin() as conn:
-
         await conn.run_sync(SQLModel.metadata.create_all)
 
 

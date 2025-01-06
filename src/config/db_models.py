@@ -1,5 +1,6 @@
 """Module to define the database models for the app."""
 
+from enum import Enum
 from typing import Annotated
 
 from sqlmodel import Field, Relationship, SQLModel
@@ -53,6 +54,12 @@ class ClaimHealthCategory(SQLModel, table=True):
     )
 
 
+class TrendEnum(Enum):
+    UP = "up"
+    DOWN = "down"
+    STABLE = "stable"
+
+
 class HealthInfluencer(SQLModel, table=True):
     __tablename__ = "HEALTH_INFLUENCER"
     id: int | None = Field(default=None, primary_key=True)
@@ -60,8 +67,7 @@ class HealthInfluencer(SQLModel, table=True):
     twitter_url: str = Field(unique=True)
     twitter_nickname: str = Field(index=True, unique=True)
     followers: int
-    trend: str  # "up" | "down" | "stable"]
-
+    trend: TrendEnum
     trust_score_avg: float
     number_verified_claims: int = 0
     estimated_annual_earnings: float
@@ -75,6 +81,14 @@ class HealthInfluencer(SQLModel, table=True):
     )
     primary_category: HealthCategory | None = Relationship()
 
+
+__all__ = [
+    "ClaimHealthCategory",
+    "HealthCategory",
+    "HealthClaim",
+    "HealthInfluencer",
+    "TrendEnum",
+]
 
 # NOTE(@jfmonsa): it could exits a table for user social media accounts
 # e.g. HealthInfluencerSocialMedia(id, health_influencer_id, social_media_id, url)
