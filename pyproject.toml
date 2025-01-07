@@ -1,10 +1,64 @@
-[tool.poetry]
+
+[project]
+authors = [
+    {name = "jfmonsa", email = "juanmonsalve@protonmail.com"},
+]
 name = "health-verify-influencers-back"
 version = "0.1.0"
-description = ""
-authors = ["jfmonsa <juanmonsalve@protonmail.com>"]
+description = "Tool to verify health claims made by influencers using AI and credible scientific research. (backend repo)"
 readme = "README.md"
-package-mode = false
+requires-python = "<4.0,>=3.13"
+
+# dependencies
+dependencies = [
+    "annotated-types<1.0.0,>=0.7.0",
+    "anyio<5.0.0,>=4.7.0",
+    "asyncpg<1.0.0,>=0.30.0",
+    "certifi<2025.0.0,>=2024.12.14",
+    "click<9.0.0,>=8.1.8",
+    "dnspython<3.0.0,>=2.7.0",
+    "email-validator<3.0.0,>=2.2.0",
+    "fastapi<1.0.0,>=0.115.6",
+    "fastapi-cli<1.0.0,>=0.0.7",
+    "h11<1.0.0,>=0.14.0",
+    "httpcore<2.0.0,>=1.0.7",
+    "httptools<1.0.0,>=0.6.4",
+    "httpx<1.0.0,>=0.28.1",
+    "idna<4.0,>=3.10",
+    "jinja2<4.0.0,>=3.1.5",
+    "markdown-it-py<4.0.0,>=3.0.0",
+    "markupsafe<4.0.0,>=3.0.2",
+    "mdurl<1.0.0,>=0.1.2",
+    "pydantic<3.0.0,>=2.10.4",
+    "pydantic-core<3.0.0,>=2.27.2",
+    "pydantic-settings<3.0.0,>=2.7.1",
+    "pygments<3.0.0,>=2.18.0",
+    "python-dotenv<2.0.0,>=1.0.1",
+    "python-multipart<1.0.0,>=0.0.20",
+    "pyyaml<7.0.0,>=6.0.2",
+    "rich<14.0.0,>=13.9.4",
+    "rich-toolkit<1.0.0,>=0.12.0",
+    "shellingham<2.0.0,>=1.5.4",
+    "sniffio<2.0.0,>=1.3.1",
+    "typer<1.0.0,>=0.15.1",
+    "typing-extensions<5.0.0,>=4.12.2",
+    "uvicorn<1.0.0,>=0.34.0",
+    "uvloop<1.0.0,>=0.21.0",
+    "watchfiles<2.0.0,>=1.0.3",
+    "websockets<15.0,>=14.1",
+    "sqlmodel<1.0.0,>=0.0.22",
+    "greenlet<4.0.0,>=3.1.1",
+    "alembic<2.0.0,>=1.14.0",
+    "poethepoet<1.0.0,>=0.32.0",
+    "uv<1.0.0,>=0.5.15",
+]
+
+[dependency-groups]
+dev = [
+    "ruff<1.0.0,>=0.8.6",
+    "mypy<2.0.0,>=1.14.1",
+    "mypy-extensions<2.0.0,>=1.0.0",
+]
 
 # scripts
 # $ poe <script name>
@@ -19,7 +73,6 @@ migration_autogen = "alembic revision --autogenerate -m \"$message\""
 migration_upgrade = "alembic upgrade head" # run pending migrations
 migration_downgrade = "alembic downgrade base" # revert all migrations
 
-
 # linter
 [tool.ruff.lint]
 select = ["ALL"]
@@ -27,57 +80,3 @@ ignore = ["D103", "D101", "D100", "ERA001", "COM812", "TD003", "FIX002", "ANN201
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["D104"]
 "src/migrations/*.py" = ["ALL"]
-
-# dev dependencies
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.8.6"
-mypy = "^1.14.1"
-mypy-extensions = "^1.0.0"
-
-# dependencies
-[tool.poetry.dependencies]
-python = "^3.13"
-annotated-types = "^0.7.0"
-anyio = "^4.7.0"
-asyncpg = "^0.30.0"
-certifi = "^2024.12.14"
-click = "^8.1.8"
-dnspython = "^2.7.0"
-email-validator = "^2.2.0"
-fastapi = "^0.115.6"
-fastapi-cli = "^0.0.7"
-h11 = "^0.14.0"
-httpcore = "^1.0.7"
-httptools = "^0.6.4"
-httpx = "^0.28.1"
-idna = "^3.10"
-jinja2 = "^3.1.5"
-markdown-it-py = "^3.0.0"
-markupsafe = "^3.0.2"
-mdurl = "^0.1.2"
-pydantic = "^2.10.4"
-pydantic-core = "^2.27.2"
-pydantic-settings = "^2.7.1"
-pygments = "^2.18.0"
-python-dotenv = "^1.0.1"
-python-multipart = "^0.0.20"
-pyyaml = "^6.0.2"
-rich = "^13.9.4"
-rich-toolkit = "^0.12.0"
-shellingham = "^1.5.4"
-sniffio = "^1.3.1"
-typer = "^0.15.1"
-typing-extensions = "^4.12.2"
-uvicorn = "^0.34.0"
-uvloop = "^0.21.0"
-watchfiles = "^1.0.3"
-websockets = "^14.1"
-sqlmodel = "^0.0.22"
-greenlet = "^3.1.1"
-alembic = "^1.14.0"
-poethepoet = "^0.32.0"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
