@@ -68,7 +68,6 @@ start_prod = "fasapi run ./src/main.py"
 
 lint = "ruff check"
 fix_lint = "ruff check --fix"
-
 migration_autogen = "alembic revision --autogenerate -m \"$message\""
 migration_upgrade = "alembic upgrade head" # run pending migrations
 migration_downgrade = "alembic downgrade base" # revert all migrations

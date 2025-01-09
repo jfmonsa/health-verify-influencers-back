@@ -2,6 +2,10 @@
 
 Welcome to the "Verify Influencers" Admin Panel project! This README will guide you through the solution to the challenge of verifying health claims made by popular influencers. Our goal is to bring clarity and credibility to online health information by leveraging AI and credible scientific research.
 
+## Project Docs
+
+1. [Getting Started](docs/get-started.md)
+
 ## 🚀 Project Overview
 
 ### Problem Statement

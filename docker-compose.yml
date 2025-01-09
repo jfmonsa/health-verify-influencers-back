@@ -1,0 +1,16 @@
+services:
+  pg_database:
+    image: postgres
+    container_name: pg_database
+    environment:
+      POSTGRES_DB: health_influencers
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+      # run sql script on container start
+      - ./db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+volumes:
+  database:

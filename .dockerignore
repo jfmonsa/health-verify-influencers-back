@@ -1,0 +1,14 @@
+.venv/
+.env
+.env.example
+.git/
+.gitignore
+.ruff_cache/
+.vscode/
+docs/
+uv.lock
+alembic.ini
+Dockerfile
+docker-compose.yml
+**/__pycache__/
+**/*.pyc
